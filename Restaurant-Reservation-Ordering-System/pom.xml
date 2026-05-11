@@ -27,17 +27,23 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>25</java.version>
+		<java.version>21</java.version>
+		<springdoc.version>2.5.0</springdoc.version>
+
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -68,6 +74,11 @@
             <version>1.5.5.Final</version>
             <scope>provided</scope>
         </dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -87,6 +98,89 @@
                             <version>1.5.5.Final</version>
                         </path>
 					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.6.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Path to your spec file (local or URL) -->
+					<inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+
+					<!-- Generator type: spring, java, typescript-fetch, python, etc. -->
+					<generatorName>spring</generatorName>
+
+					<!-- Output directory -->
+					<output>${project.build.directory}/generated-sources/openapi</output>
+
+					<!-- Base package for generated code -->
+					<apiPackage>com.Klaos.Restaurant.Reservation.Ordering.System.controller</apiPackage>
+					<modelPackage>com.Klaos.Restaurant.Reservation.Ordering.System.dto</modelPackage>
+
+					<configOptions>
+						<!-- Generate interfaces instead of concrete controllers -->
+						<interfaceOnly>true</interfaceOnly>
+						<!-- Use Spring Boot 3 / Jakarta EE -->
+						<useSpringBoot3>true</useSpringBoot3>
+						<!-- Use java.time types instead of legacy Date -->
+						<dateLibrary>java8</dateLibrary>
+						<!-- Avoid generating unnecessary files -->
+						<skipDefaultInterface>true</skipDefaultInterface>
+						<useTags>true</useTags>
+					</configOptions>
+				</configuration>
+			</plugin>
+
+			<!-- Generates openapi.json at build time -->
+			<plugin>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>generate-openapi-spec</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- URL of the running app's spec endpoint -->
+					<apiDocsUrl>http://localhost:8080/v3/api-docs</apiDocsUrl>
+					<!-- Output file name -->
+					<outputFileName>openapi.json</outputFileName>
+					<!-- Output directory -->
+					<outputDir>${project.build.directory}</outputDir>
+					<!-- Fail the build if the spec can't be generated -->
+					<skip>false</skip>
 				</configuration>
 			</plugin>
 			<plugin>
