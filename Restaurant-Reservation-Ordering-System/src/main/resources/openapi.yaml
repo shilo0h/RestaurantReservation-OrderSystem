@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: Chat Backend Rest API
+  description: |
+    Rest API for the ViaTeh chat-backend service.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: Menu
+    description: Menu Controller
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /menu:
+    get:
+      operationId: getAllMenuItems
+      tags: [ Menu ]
+      summary: Get all menu items
+      responses:
+        '200':
+          description: List of menu items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItemsDTO'
+
+    post:
+      operationId: addMenuItem
+      tags: [ Menu ]
+      summary: Add a new menu item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItemsDTO'
+      responses:
+        '200':
+          description: Created menu item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItemsDTO'
+
+  /menu/{id}:
+    get:
+      operationId: getMenuItemById
+      tags: [ Menu ]
+      summary: Get menu item by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Menu item found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItemsDTO'
+        '404':
+          description: Menu item not found
+
+    put:
+      operationId: updateMenuItem
+      tags: [ Menu ]
+      summary: Update a menu item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItemsDTO'
+      responses:
+        '200':
+          description: Updated menu item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItemsDTO'
+
+    delete:
+      operationId: deleteMenuItem
+      tags: [ Menu ]
+      summary: Delete a menu item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Menu item deleted successfully
+
+components:
+
+  schemas:
+    MenuItemsDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+      required:
+        - name
+        - price
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

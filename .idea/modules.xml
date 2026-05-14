@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Restaurant Reservation &amp; Ordering System.iml" filepath="$PROJECT_DIR$/.idea/Restaurant Reservation &amp; Ordering System.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Restaurant-Reservation-Ordering-System/Restaurant-Reservation-Ordering-System.iml" filepath="$PROJECT_DIR$/Restaurant-Reservation-Ordering-System/Restaurant-Reservation-Ordering-System.iml" />
     </modules>
   </component>
 </project>
