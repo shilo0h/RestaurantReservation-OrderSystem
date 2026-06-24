@@ -2,26 +2,31 @@ spring:
   config:
     activate:
       on-profile: locale
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/restaurant
-    username: postgres
-    password: root
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/restaurant}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
     driver-class-name: org.postgresql.Driver
-  jpa:                          # <-- should be under spring, not springdoc
+
+  jpa:
     hibernate:
       ddl-auto: update
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
     show-sql: false
 
 springdoc:
   api-docs:
     path: /v3/api-docs
     enabled: true
+
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
@@ -29,4 +34,5 @@ springdoc:
     operations-sorter: alpha
     tags-sorter: alpha
     filter: true
+
   show-actuator: false
