@@ -16,11 +16,14 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OrderItemsMapping {
 
-
+    @Mapping(target = "orders", ignore = true)
+    @Mapping(target = "menuItems", ignore = true)
     OrderItems toOrderItems(OrderItemsDTO orderItemsDTO);
+
     @Mapping(source = "menuItems.id", target = "menuItemId")
     OrderItemsDTO toOderItemsDTO(OrderItems orders);
-    List<OrderItemsDTO> toListOrderItemsDTO(List<OrderItems>ordersList);
-    List<OrderItems> toOrderItemsList(List<OrderItemsDTO>orderItemsDTOS);
 
+    List<OrderItemsDTO> toListOrderItemsDTO(List<OrderItems> ordersList);
+
+    List<OrderItems> toOrderItemsList(List<OrderItemsDTO> orderItemsDTOS);
 }

@@ -20,6 +20,7 @@ public class MenuItems {
     private Long id;
     private String name;
     private Double price;
+    private String description;
 
     @OneToMany(mappedBy = "menuItems",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<OrderItems>orderItems;
