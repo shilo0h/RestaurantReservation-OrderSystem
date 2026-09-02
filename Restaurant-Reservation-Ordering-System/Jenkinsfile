@@ -28,5 +28,13 @@ pipeline {
             }
         }
 
+        stage('Docker Build') {
+            steps {
+                dir('Restaurant-Reservation-Ordering-System') {
+                    sh 'docker build -t restaurant-reservation:latest .'
+                }
+            }
+        }
+
     }
 }
