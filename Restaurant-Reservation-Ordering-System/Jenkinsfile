@@ -35,6 +35,11 @@ pipeline {
                 }
             }
         }
+        stage('Trivy Scan') {
+            steps {
+                sh 'trivy image --severity HIGH,CRITICAL --scanners vuln restaurant-reservation:latest'
+            }
+        }
 
     }
 }
