@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Test Jenkins') {
+        stage('Build & Test') {
             steps {
-                echo 'Jenkins is running from GitHub!'
+                dir('Restaurant-Reservation-Ordering-System') {
+                    sh './mvnw clean test'
+                }
             }
         }
     }
 }
-
-// Jenkins pipeline test
