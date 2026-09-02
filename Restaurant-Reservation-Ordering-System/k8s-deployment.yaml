@@ -15,7 +15,10 @@ spec:
     spec:
       containers:
         - name: spring-boot-k8s
-          image: springboot-k8s-example:1.0
+          image: restaurant-reservation:19
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "locale"
