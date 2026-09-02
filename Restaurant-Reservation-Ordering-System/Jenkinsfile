@@ -31,15 +31,20 @@ pipeline {
         stage('Docker Build') {
             steps {
                 dir('Restaurant-Reservation-Ordering-System') {
-                    sh 'docker build -t restaurant-reservation:latest .'
+                    sh 'docker build -t restaurant-reservation:${BUILD_NUMBER} .'
                 }
             }
         }
         stage('Trivy Scan') {
             steps {
-                sh 'trivy image --severity HIGH,CRITICAL --scanners vuln restaurant-reservation:latest'
+                sh 'trivy image --severity HIGH,CRITICAL --scanners vuln restaurant-reservation:${BUILD_NUMBER}'
             }
         }
-
+        stage('Push Image') {
+            steps {
+                sh 'docker tag restaurant-reservation:${BUILD_NUMBER} localhost:5000/restaurant-reservation:${BUILD_NUMBER}'
+                sh 'docker push localhost:5000/restaurant-reservation:${BUILD_NUMBER}'
+            }
+        }
     }
 }
