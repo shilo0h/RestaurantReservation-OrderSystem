@@ -1,16 +1,32 @@
-stage('SonarQube Analysis') {
-    steps {
-        dir('Restaurant-Reservation-Ordering-System') {
-            withSonarQubeEnv('SonarQube') {
-                withCredentials([
-                    string(
-                        credentialsId: 'sonarqube-token',
-                        variable: 'SONAR_AUTH_TOKEN'
-                    )
-                ]) {
-                    sh './mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=restaurant-reservation-ordering-system -Dsonar.token=$SONAR_AUTH_TOKEN'
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build & Test') {
+            steps {
+                dir('Restaurant-Reservation-Ordering-System') {
+                    sh './mvnw clean test'
                 }
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir('Restaurant-Reservation-Ordering-System') {
+                    withSonarQubeEnv('SonarQube') {
+                        withCredentials([
+                            string(
+                                credentialsId: 'sonarqube-token',
+                                variable: 'SONAR_AUTH_TOKEN'
+                            )
+                        ]) {
+                            sh './mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=restaurant-reservation-ordering-system -Dsonar.token=$SONAR_AUTH_TOKEN'
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
