@@ -58,5 +58,28 @@ pipeline {
                 }
             }
         }
+        stage('Commit & Push Changes') {
+            steps {
+                dir('Restaurant-Reservation-Ordering-System') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'github-credentials',
+                            usernameVariable: 'GIT_USERNAME',
+                            passwordVariable: 'GIT_PASSWORD'
+                        )
+                    ]) {
+                        sh '''
+                            git config user.name "Jenkins"
+                            git config user.email "jenkins@localhost"
+
+                            git add restaurant-reservation/values.yaml
+                            git commit -m "Update image tag to ${BUILD_NUMBER}" || echo "No changes to commit"
+
+                            git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/shilo0h/RestaurantReservation-OrderSystem.git HEAD:master
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
