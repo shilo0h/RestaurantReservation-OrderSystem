@@ -51,11 +51,9 @@ pipeline {
             steps {
                 dir('Restaurant-Reservation-Ordering-System') {
                     sh '''
-                        pwd
-                        echo "Contents:"
-                        ls -la
-                        echo "Directories:"
-                        find . -maxdepth 2 -type d
+                        sed -i "s/tag: \\".*\\"/tag: \\"${BUILD_NUMBER}\\"/" restaurant-reservation/values.yaml
+                        echo "Updated Helm image tag to ${BUILD_NUMBER}"
+                        grep -A 3 "^image:" restaurant-reservation/values.yaml
                     '''
                 }
             }
