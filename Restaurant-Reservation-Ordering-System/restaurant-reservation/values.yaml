@@ -9,7 +9,7 @@ replicaCount: 1
 image:
   repository: restaurant-reservation
   pullPolicy: IfNotPresent
-  tag: "26"
+  tag: "27"
 
 env:
   - name: SPRING_PROFILES_ACTIVE
