@@ -46,5 +46,17 @@ pipeline {
                 sh 'docker push localhost:5000/restaurant-reservation:${BUILD_NUMBER}'
             }
         }
+
+        stage('Update Image Tag') {
+            steps {
+                dir('Restaurant-Reservation-Ordering-System') {
+                    sh '''
+                        sed -i "s/tag: \\".*\\"/tag: \\"${BUILD_NUMBER}\\"/" restaurant-reservation/values.yaml
+                        echo "Updated Helm image tag to ${BUILD_NUMBER}"
+                        grep -A 3 "^image:" restaurant-reservation/values.yaml
+                    '''
+                }
+            }
+        }
     }
 }
